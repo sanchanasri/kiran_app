@@ -1,0 +1,115 @@
+#%RAML 1.0 Library
+types:
+  userCreate:
+    description: 
+    type: object
+    properties:
+       name:
+          type: string
+          required: true
+          example: "alagar"
+       age:
+         type: string
+         required: false
+         example: "19"
+       gender:
+         type: string
+         required: false
+         example: "male"
+       location:
+         type: string
+         required: false
+         example: "theni"
+       mobileNumber:
+         type:  string
+         required: true
+         example: "9600291731"
+       email:
+         type: string
+         required: true
+         example: "kiran123@gmail.com"
+       password:
+         type: string
+         required: true
+         example: "Kiran@123"
+       confirmPassword:
+         type: string
+         required: true
+         example: "Kiran@123"
+
+  userUpdate:
+    type: object
+    description: 
+    properties:
+       name:
+          type: string
+          required: true
+          example: "alagar"
+       age:
+         type: number
+         required: false
+         example: 19
+       gender:
+         type: 
+         enum: ["male","female","others"]
+         required: false
+         example: "male"
+       location:
+         type: string
+         required: false
+         example: "theni"
+       mobileNumber:
+         type:  string
+         required: true
+         example: "9600291731"    
+       email:
+         type: string
+         required: true
+         example: "kiran123@gmail.com"        
+       password:
+         type: string
+         required: true
+         example: "Kiran@123"       
+       confirmPassword:
+         type: string
+         required: true
+         example: "Kiran@123"       
+       userId:
+         type: number
+         example: 422
+           
+
+  Userlogin:
+    type: object
+    description:
+    properties:
+     username:
+      type: string
+      required: true
+      minLength: 6
+      description: "This field contains email id or phone no of the user"
+      example: "kiran1@gmail.com"
+     password:
+      type: string
+      required: true
+      minLength: 6
+      description: "This field contains password of the user"
+      example: "Sam123456"
+
+  UserResponse:
+    type: object
+    properties:
+     email:
+      type: string
+      example: "Kiran1@gmail.com"
+      required: false
+      minLength: 6
+     question_type:
+      type: string
+      example: "Anxiety"
+      required: false
+     option_name:
+      example: "Several days"
+      type: string
+      required: true
+

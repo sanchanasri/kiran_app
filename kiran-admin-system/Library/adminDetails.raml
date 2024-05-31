@@ -1,0 +1,102 @@
+#%RAML 1.0 Library
+types:
+  adminCreate:
+    description: 
+    type: object
+    properties:
+       first_name:
+          type: string
+          required: true
+          example:
+            "sanchana"
+       last_name:
+          type: string
+          required: false
+          example:
+            "sri"
+       email:
+         type: string
+         required: true
+         pattern: ^.+@.+\..+$
+         example:
+           "kiran123@gmail.com"
+       password:
+         type: string
+         required: true
+         minLength: 6
+         example:
+           "Kiran@123"
+       confirmPassword:
+         type: string
+         required: true
+         minLength: 6
+         example:
+           "Kiran@123"
+       mobile_number:
+         type:  string
+         required: true
+         example:
+           "9600291731"
+       designation:
+         type: string
+         required: true
+         example:
+            "admin"
+       id_proof:
+         type: file
+         fileTypes: ['application/pdf']
+         required: true
+         maxLength: 10485760
+      
+
+  adminUpdate:
+    type: object
+    description: 
+    
+    properties:
+       first_name:
+          type: string
+          required: false
+          example:
+            "sanchana"
+       last_name:
+          type: string
+          required: false
+          example:
+            "sri"
+       email:
+         type: string
+         required: false
+         pattern: ^.+@.+\..+$
+         example:
+           "kiran123@gmail.com"
+       password:
+         type: string
+         required: false
+         minLength: 6
+         example:
+           "Kiran@123"
+       confirmPassword:
+         type: string
+         required: false
+         example:
+           "Kiran@123"
+       mobile_number:
+         type:  string
+         required: false
+         example:
+           "9600291731"
+       designation:
+         type: string
+         required: false
+         example:
+           "admin"
+       id_proof:
+         type: file
+         fileTypes: ['application\pdf']
+         required: false
+         maxLength: 10485760
+       id:
+         type: string
+         example:
+           "1"

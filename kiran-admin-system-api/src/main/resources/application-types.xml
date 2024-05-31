@@ -1,0 +1,30 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<types:mule xmlns:types="http://www.mulesoft.org/schema/mule/types">
+  <types:catalog>
+    <types:type name="patient_details" format="json">
+      <types:shape format="weave" example="examples/mule example.json"><![CDATA[%dw 2.0
+
+type patient_details = Array<{|  Disease: String,   gender: String,   Test_score: Null,   nation: Null,   lastloginDate: String,   createDate: String,   ptid: Number {"typeId": "int"},   consulted_doctor: Null,   marital_status: Null,   name: String,   Location: String,   mobile_number: String,   age: Number {"typeId": "int"},   email: String|}> {"example": "[{\\\"Disease\\\":\\\"depression\\\",\\\"gender\\\":\\\"female\\\",\\\"Test_score\\\":null,\\\"nation\\\":null,\\\"lastloginDate\\\":\\\"2022-06-09T05:33:30\\\",\\\"createDate\\\":\\\"2022-07-25T14:31:34\\\",\\\"ptid\\\":441,\\\"consulted_doctor\\\":null,\\\"marital_status\\\":null,\\\"name\\\":\\\"sanchana\\\",\\\"Location\\\":\\\"tiruppur\\\",\\\"mobile_number\\\":\\\"76585638576\\\",\\\"age\\\":19,\\\"email\\\":\\\"sanchana45@gmail.com\\\"},{\\\"Disease\\\":null,\\\"gender\\\":\\\"female\\\",\\\"Test_score\\\":null,\\\"nation\\\":null,\\\"lastloginDate\\\":null,\\\"createDate\\\":\\\"2022-07-26T04:41:49\\\",\\\"ptid\\\":447,\\\"consulted_doctor\\\":null,\\\"marital_status\\\":null,\\\"name\\\":\\\"ria\\\",\\\"Location\\\":\\\"tiruppur\\\",\\\"mobile_number\\\":\\\"7659638576\\\",\\\"age\\\":19,\\\"email\\\":\\\"ria45@gmail.com\\\"}]"}
+
+]]></types:shape>
+    </types:type>
+  </types:catalog>
+  <types:enrichment select="#9c5b93bf-87b5-4005-9526-80ab0bd0144b">
+    <types:processor-declaration>
+      <types:output-event>
+        <types:message>
+          <types:payload type="patient_details"/>
+        </types:message>
+      </types:output-event>
+    </types:processor-declaration>
+  </types:enrichment>
+  <types:enrichment select="#cd2f0040-9118-430e-9991-f9a4c821508d">
+    <types:processor-declaration>
+      <types:output-event>
+        <types:message>
+          <types:payload type="patient_details"/>
+        </types:message>
+      </types:output-event>
+    </types:processor-declaration>
+  </types:enrichment>
+</types:mule>

@@ -1,0 +1,196 @@
+#%RAML 1.0
+title: admin_register#%RAML 1.0
+description: 
+mediaType: 
+ - application/json
+protocols:
+- HTTP
+
+version: 1.0 
+securitySchemes:
+  basic:
+    type: Basic Authentication
+securedBy:
+  - basic
+uses:
+      adminDetails: Library/adminDetails.raml
+      loginDetails: Library/loginDetails.raml
+      psyDetails: Library/psyDetails.raml
+/admin:
+  /admin_login:
+   post:
+    body:
+      application/json:
+        type: loginDetails.loginDetails
+        example: !include examples/login_examples/login_inputExample.json
+          
+    queryParameters:
+      username: 
+        required: false
+        example: "admin@gmail.com"
+      password:
+        required: false
+        example: "admin12345"
+    responses:
+      200:
+        body:
+          application/json:
+            example: !include examples/login_examples/LoginSuccessResponse.json
+      400:
+        body:
+          application/json:
+            example: !include examples/login_examples/LoginFailureResponse.json
+                    
+    
+  /admin_register:
+   post:
+    body:
+      application/json:
+        type: adminDetails.adminCreate
+    responses:
+      200:
+        body:
+          application/json:
+             example:  !include examples/registerExamples/adminCreate.json
+      400:
+        body:
+          application/json:
+            example: !include examples/registerExamples/errorResponse.json 
+
+    
+   put:
+    body:
+      application/json:
+        type: adminDetails.adminUpdate
+    responses:
+      200:
+        body:
+          application/json:
+             example: !include examples/registerExamples/adminUpdate.json
+      400:
+        body:
+          application/json:
+            example: !include examples/registerExamples/errorResponse.json
+   get:
+    queryParameters: 
+       first_name:
+          type: string
+          required: false
+          example:
+            "sanchana"
+       email:
+         type: string
+         required: false
+         example:
+           "sanchana@gmail.com"
+       mobile_number:
+         type: string 
+         required: false
+         example:
+             "9876598765"
+    responses:
+      200:
+        body:
+          application/json:
+            example: !include examples/registerExamples/adminGet.json
+      400:
+        body:
+          application/json:
+            example: !include examples/registerExamples/errorResponse.json
+              
+    
+   delete:
+      body:
+        application/json:
+          
+      responses:
+        200:
+          body:
+            application/json:
+              example: !include examples/registerExamples/adminDelete.json
+        400:
+          body:
+            application/json:
+              example: !include examples/registerExamples/errorResponse.json
+  /psy_approval_details:
+   get:
+    queryParameters:
+      email:
+       type: string
+       required: false
+       example: "sanchana@gmail.com"
+      psyID:
+       type: number
+       required: false
+       example:
+        2
+      status:
+        type: string
+        required: false
+        example: "pending"
+    responses:
+        200:
+         body:
+           application/json:
+             example: !include examples/psy_approvalExample/getExample.json
+        400:
+         body:
+           application/json:
+             example: !include examples/psy_approvalExample/errorResponse.json
+   put:
+      body:
+        application/json:
+         type: psyDetails.psy_details
+      responses:
+       200:
+         body:
+           application/json:
+             example: !include examples/psy_approvalExample/putExample.json
+       400:
+         body:
+           application/json:
+             example: !include examples/psy_approvalExample/errorResponse.json
+  /patientDetailsDisplay:
+   get:
+    queryParameters:
+       Disease:
+         type: string
+         required: false
+         example:
+           "depression" 
+       mobileNumber:
+         type:  string
+         required: false
+         example:
+           "9745621044"           
+       email:
+         type: string
+         required: false
+         example:
+           "kiran123@gmail.com"
+    responses:
+      200:
+        body:
+          application/json:
+            example: !include examples/patientDetailsExample/successResponse.json
+              
+      400:
+        body:
+          application/json:
+            example: !include examples/patientDetailsExample/errorResponse.json    
+  
+  /allPatientDetails:
+    get:
+     body:
+        application/json:
+     responses:
+      200:
+        body:
+          application/json:
+            example: !include  examples/patientDetailsExample/successResponse.json
+              
+              
+      400:
+        body:
+          application/json:
+            example: !include examples/patientDetailsExample/errorResponse.json    

@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core" xmlns="http://www.mulesoft.org/schema/mule/core"
+	xmlns:doc="http://www.mulesoft.org/schema/mule/documentation"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd">
+	<error-handler name="errorhandlerError_Handler" doc:id="46d4983d-b8f1-41a8-a134-8233a14e089e" >
+		<on-error-continue enableNotifications="true" logException="true" doc:name="On Error Continue" doc:id="cf9ed9b8-84cf-440b-bf91-91c4923e974b" >
+			<ee:transform doc:name="Transform Message" doc:id="a5bee933-452f-484f-bc77-b41e9ecb5f7e" >
+				<ee:message >
+					<ee:set-payload ><![CDATA[%dw 2.0
+output application/json
+---
+{
+    "status": "failed",
+    "error": error.detailedDescription
+
+  }
+]]></ee:set-payload>
+				</ee:message>
+				<ee:variables >
+					<ee:set-variable variableName="httpStatus" ><![CDATA[500]]></ee:set-variable>
+				</ee:variables>
+			</ee:transform>
+		</on-error-continue>
+	</error-handler>
+</mule>

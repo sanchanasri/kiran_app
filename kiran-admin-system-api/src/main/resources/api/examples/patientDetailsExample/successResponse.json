@@ -1,0 +1,16 @@
+[
+  {
+    "name": "ram",
+    "age":27,
+    "gender":"male",
+    "disease":"depression",
+    "test_score":"20",
+    "mobile_number":"9374629472",
+    "location":"coimbatore",
+    "email":"ram@gmail.com",
+    "consulted_doctor":"dhansree",
+    "lastloginDate":"2022-06-09",
+    "createDate":"2022-04-04",
+    "status": "successfully"
+  }
+]

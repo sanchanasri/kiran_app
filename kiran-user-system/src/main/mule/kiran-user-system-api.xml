@@ -1,0 +1,342 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mule xmlns="http://www.mulesoft.org/schema/mule/core" xmlns:apikit="http://www.mulesoft.org/schema/mule/mule-apikit" xmlns:db="http://www.mulesoft.org/schema/mule/db" xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core" xmlns:http="http://www.mulesoft.org/schema/mule/http" xmlns:os="http://www.mulesoft.org/schema/mule/os" xmlns:tls="http://www.mulesoft.org/schema/mule/tls" xmlns:validation="http://www.mulesoft.org/schema/mule/validation" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation=" http://www.mulesoft.org/schema/mule/tls http://www.mulesoft.org/schema/mule/tls/current/mule-tls.xsd http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd http://www.mulesoft.org/schema/mule/mule-apikit http://www.mulesoft.org/schema/mule/mule-apikit/current/mule-apikit.xsd http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd  http://www.mulesoft.org/schema/mule/db http://www.mulesoft.org/schema/mule/db/current/mule-db.xsd http://www.mulesoft.org/schema/mule/validation http://www.mulesoft.org/schema/mule/validation/current/mule-validation.xsd http://www.mulesoft.org/schema/mule/os http://www.mulesoft.org/schema/mule/os/current/mule-os.xsd">
+    <apikit:config name="kiran-user-system-api-config" api="kiran-user-system-api.raml" outboundHeadersMapName="outboundHeaders" httpStatusVarName="httpStatus" />
+    <http:listener-config name="kiran-admin-system-api-httpListenerConfig">
+        <http:listener-connection host="0.0.0.0" port="8082" protocol="HTTPS">
+            <tls:context>
+                <tls:key-store type="jks" path="mule.jks" keyPassword="password" password="password" />
+            </tls:context>
+        </http:listener-connection>
+        <http:listener-interceptors>
+            <http:cors-interceptor>
+                <http:origins>
+                    <http:public-resource />
+                </http:origins>
+            </http:cors-interceptor>
+        </http:listener-interceptors>
+    </http:listener-config>
+    <db:config name="Database_Config" doc:name="Database Config" doc:id="c0394dec-1a66-4ee5-9804-785d99836adf">
+        <db:my-sql-connection host="ec2-54-196-247-72.compute-1.amazonaws.com" port="3306" user="Thamizh" password="Happy!12345" database="kiran_system_db" />
+    </db:config>
+    <validation:config name="Validation_Config" doc:name="Validation Config" doc:id="48f92859-2e98-432c-b137-81c5c220c592" />
+    <configuration doc:name="Configuration" doc:id="1f6ae1a7-2af0-4833-a974-cd87742de2f9" defaultErrorHandler-ref="errorhandlerError_Handler" />
+    <http:request-config name="HTTP_Request_configuration" doc:name="HTTP Request configuration" doc:id="00bb0d46-38c8-4a2c-bd58-44f117fa4650" responseTimeout="60000">
+        <http:request-connection protocol="HTTPS" host="verifyaadhaarnumber.p.rapidapi.com" tlsContext="TLS_Context" />
+    </http:request-config>
+    <tls:context name="TLS_Context" doc:name="TLS Context" doc:id="effae708-9bc4-48c6-a4b0-efcc1f2ba763">
+        <tls:trust-store insecure="true" />
+    </tls:context>
+    <ee:object-store-caching-strategy name="Caching_Strategy" doc:name="Caching Strategy" doc:id="d7506352-45ea-4091-ad88-b950a06dd1d8" objectStore="Object_store" />
+    <os:object-store name="Object_store" doc:name="Object store" doc:id="bbcfef21-9f4a-4be3-8593-7a56005a4758" maxEntries="-1" entryTtlUnit="HOURS" expirationInterval="-1" />
+    <flow name="kiran-user-system-api-main">
+        <http:listener config-ref="kiran-admin-system-api-httpListenerConfig" path="/api/*">
+            <http:response statusCode="#[vars.httpStatus default 200]">
+                <http:headers><![CDATA[#[vars.outboundHeaders default {}]]]></http:headers>
+            </http:response>
+            <http:error-response statusCode="#[vars.httpStatus default 500]">
+                <http:body><![CDATA[#[payload]]]></http:body>
+                <http:headers><![CDATA[#[vars.outboundHeaders default {}]]]></http:headers>
+            </http:error-response>
+        </http:listener>
+        <logger level="INFO" doc:name="Logger" doc:id="ec2128e9-ebcd-4263-9fc8-bfb4f96b0f04" message="#[payload]" />
+        <logger level="INFO" doc:name="Logger" doc:id="42e96724-9d1c-4fc2-b60e-06123ffe136b" message="----------------------------------- started-----------------------------------------------------------" />
+        <apikit:router config-ref="kiran-user-system-api-config" />
+        <logger level="INFO" doc:name="Logger" doc:id="b48189e8-3792-4f47-801e-78afdb4759d1" message="------------------------------------------End------------------------------------------------" />
+    </flow>
+    <flow name="kiran-user-system-api-console">
+        <http:listener config-ref="kiran-admin-system-api-httpListenerConfig" path="/console/*">
+            <http:response statusCode="#[vars.httpStatus default 200]">
+                <http:headers><![CDATA[#[vars.outboundHeaders default {}]]]></http:headers>
+            </http:response>
+            <http:error-response statusCode="#[vars.httpStatus default 500]">
+                <http:body><![CDATA[#[payload]]]></http:body>
+                <http:headers><![CDATA[#[vars.outboundHeaders default {}]]]></http:headers>
+            </http:error-response>
+        </http:listener>
+        <apikit:console config-ref="kiran-user-system-api-config" />
+        <error-handler>
+            <on-error-propagate type="APIKIT:NOT_FOUND">
+                <ee:transform>
+                    <ee:message>
+                        <ee:set-payload><![CDATA[%dw 2.0
+output application/json
+---
+{message: "Resource not found"}]]></ee:set-payload>
+                    </ee:message>
+                    <ee:variables>
+                        <ee:set-variable variableName="httpStatus">404</ee:set-variable>
+                    </ee:variables>
+                </ee:transform>
+            </on-error-propagate>
+        </error-handler>
+    </flow>
+    <flow name="put:\user\userregister:application\json:kiran-user-system-api-config">
+        <ee:transform doc:name="Transform Message" doc:id="4bae1052-661e-4096-8119-a8a4c00ae2ab">
+            <ee:message>
+                <ee:set-payload><![CDATA[%dw 2.0
+output application/json
+var email= if(isEmpty(payload.email))
+"DeltaDelete,"
+else  "email= '"  ++ payload.email ++ "',"
+
+var name= if(isEmpty(payload.name))
+"DeltaDelete,"
+else  "name= '"  ++ payload.name ++ "',"
+
+var password= if(isEmpty(payload.password))
+"DeltaDelete,"
+else  "password= '"  ++ payload.password ++ "',"
+
+var mobile_Number= if(isEmpty(payload.mobile_Number))
+"DeltaDelete,"
+else  "mobile_Number= '"  ++ payload.mobile_Number ++ "',"
+
+var age= if(isEmpty(payload.age))
+"DeltaDelete,"
+else  "age= '"  ++ payload.age ++ "',"
+
+var location= if(isEmpty(payload.location))
+"DeltaDelete,"
+else  "location= '"  ++ payload.location ++ "',"
+
+var userId=  payload.userId
+---
+q:(("update user_details set "++ email ++ name ++ password ++ mobile_Number ++ age ++ location ++ "where userId="  ++ userId) replace  "DeltaDelete," with "") replace  ",where" with " where"]]></ee:set-payload>
+            </ee:message>
+        </ee:transform>
+        <db:update doc:name="Update" doc:id="8e581ada-783b-4ba9-9f22-490d101b655e" config-ref="Database_Config">
+            <db:sql><![CDATA[#[payload.q]]]></db:sql>
+            <db:input-parameters><![CDATA[#[payload]]]></db:input-parameters>
+        </db:update>
+        <ee:transform doc:name="Transform Message" doc:id="cebd9f81-11da-4563-9456-3114407e47ae">
+            <ee:message>
+                <ee:set-payload><![CDATA[%dw 2.0
+output application/json
+---
+payload]]></ee:set-payload>
+            </ee:message>
+        </ee:transform>
+    </flow>
+    <flow name="delete:\user\userregister:kiran-user-system-api-config">
+        <db:delete doc:name="Delete" doc:id="8f19f0af-8240-454c-ab4a-aa67bb477960" config-ref="Database_Config">
+            <db:sql><![CDATA[delete from user_details where userId = :userId;]]></db:sql>
+            <db:input-parameters><![CDATA[#[{'userId': attributes.queryParams.userId}]]]></db:input-parameters>
+        </db:delete>
+        <ee:transform doc:name="Transform Message" doc:id="bf28551d-d4dc-4a04-ba03-cd51e223a6a8">
+            <ee:message>
+                <ee:set-payload><![CDATA[%dw 2.0
+output application/json
+---
+{
+    "status": "ok",
+    "message": "user is deleted"
+  }]]></ee:set-payload>
+            </ee:message>
+        </ee:transform>
+    </flow>
+    <flow name="get:\user\questionnaire:kiran-user-system-api-config">
+        <db:select doc:name="Select - disorderType" doc:id="b3127afe-c989-442c-a241-c8174052c019" config-ref="Database_Config">
+            <db:sql><![CDATA[select * from questionnaire where question_type = :question_type]]></db:sql>
+            <db:input-parameters><![CDATA[#[{'question_type': attributes.queryParams.question_type}]]]></db:input-parameters>
+        </db:select>
+        <ee:transform>
+            <ee:message>
+                <ee:set-payload><![CDATA[%dw 2.0
+output application/json
+---
+payload]]></ee:set-payload>
+            </ee:message>
+        </ee:transform>
+    </flow>
+    <flow name="get:\user\userregister:kiran-user-system-api-config">
+        <db:select doc:name="Select" doc:id="8579836e-02ca-443b-a0c1-27e56c912b94" config-ref="Database_Config">
+            <db:sql><![CDATA[select * from user_details where email = :email]]></db:sql>
+            <db:input-parameters><![CDATA[#[{'email': attributes.queryParams.email}]]]></db:input-parameters>
+        </db:select>
+        <ee:transform doc:name="Transform Message" doc:id="a7246c8c-d7a0-4e09-9db9-da748ff9afac">
+            <ee:message>
+                <ee:set-payload><![CDATA[%dw 2.0
+output application/json
+---
+payload[0] default {}]]></ee:set-payload>
+            </ee:message>
+        </ee:transform>
+    </flow>
+    <flow name="post:\user\userlogin:application\json:kiran-user-system-api-config">
+        <db:select doc:name="UserLogin -Select" doc:id="0fd4aef2-1e14-4cff-b925-7a4aeb022eb2" config-ref="Database_Config">
+            <db:sql><![CDATA[select * from login_details where email = :email and password = :password]]></db:sql>
+            <db:input-parameters><![CDATA[#[{'email': payload.username, 
+'password': payload.password}]]]></db:input-parameters>
+        </db:select>
+        <validation:is-not-empty-collection doc:name="Is not empty collection" doc:id="d0c53ada-5532-4a20-bd92-6d6434dabb8a" config-ref="Validation_Config" message="#[&quot;User not found&quot;]">
+            <error-mapping sourceType="VALIDATION:EMPTY_COLLECTION" targetType="APP:USER_NOT_FOUND" />
+        </validation:is-not-empty-collection>
+        <ee:transform>
+            <ee:message>
+                <ee:set-payload><![CDATA[%dw 2.0
+output application/json
+---
+{
+   status : true
+  }]]></ee:set-payload>
+            </ee:message>
+        </ee:transform>
+    </flow>
+    <flow name="post:\user\userregister:application\json:kiran-user-system-api-config">
+        <db:insert doc:name="Insert" doc:id="689c8404-4952-4d47-9131-9d7ea4dddede" config-ref="Database_Config">
+            <db:sql><![CDATA[insert into user_details (name,age,gender,location,mobileNumber,email,password,confirmPassword,AadharID,parentDetails,contactNumber,above18) values (:name,:age,:gender,:location,:mobileNumber,:email,:password,:confirmPassword,:AadharID,:parentDetails,:contactNumber,:above18)]]></db:sql>
+            <db:input-parameters><![CDATA[#[{'name': payload.name,
+ 'age': payload.age as Number default null,
+ 'gender': payload.gender,
+ 'location': payload.location,
+ 'mobileNumber': payload.mobileNumber,
+ 'email': payload.email,
+ 'password': payload.password,
+ confirmPassword : payload.confirmPassword,
+ AadharID: payload.AadharID,
+ parentDetails: payload.parentDetails,
+ contactNumber: payload.contactNumber,
+ above18: payload.above18
+}]]]></db:input-parameters>
+        </db:insert>
+        <ee:transform doc:name="Transform Message" doc:id="3bf1fc15-1a4c-4bbf-a0f5-7a1729730a99">
+            <ee:message>
+                <ee:set-payload><![CDATA[%dw 2.0
+output application/json
+---
+{
+	status: true
+}]]></ee:set-payload>
+            </ee:message>
+        </ee:transform>
+    </flow>
+    <flow name="post:\user\submission:application\json:kiran-user-system-api-config">
+        <ee:transform doc:name="answerList" doc:id="8812e80b-4657-4558-b7f1-8ce7ba86f5c8">
+            <ee:message />
+            <ee:variables>
+                <ee:set-variable variableName="answerList"><![CDATA[%dw 2.0
+output application/json
+---
+payload]]></ee:set-variable>
+            </ee:variables>
+        </ee:transform>
+        <db:select doc:name="Select" doc:id="93eb7a1e-3309-4ec8-9809-1796995ca94c" config-ref="Database_Config">
+            <db:sql><![CDATA[select * from options;]]></db:sql>
+        </db:select>
+        <ee:transform doc:name="answerLookup" doc:id="2a775c55-42c1-41c0-87d5-33359581465b">
+            <ee:message />
+            <ee:variables>
+                <ee:set-variable variableName="answerLookup"><![CDATA[%dw 2.0
+output application/json
+---
+payload]]></ee:set-variable>
+            </ee:variables>
+        </ee:transform>
+        <ee:transform doc:name="Transform Message" doc:id="85d0cb97-7b80-4ef7-abfa-7690caac22f6">
+            <ee:message>
+                <ee:set-payload><![CDATA[%dw 2.0
+output application/json
+---
+  vars.answerList map(answer,index) -> {
+
+	"email": answer.email,
+	"question_type": answer.question_type,
+	"option_name": answer.option_name,
+	//"option_value": (answerTypeLookup filter ($.option_code == payload.option_name))[0].value
+	"value": (vars.answerLookup filter ($.option_name == answer.option_name))[0].mark
+	
+  }]]></ee:set-payload>
+            </ee:message>
+        </ee:transform>
+        <ee:transform doc:name="sumBy" doc:id="2104606c-3a25-4b2b-8837-2401af7272e6">
+            <ee:message>
+                <ee:set-payload><![CDATA[%dw 2.0
+import * from dw::core::Arrays
+output application/json
+---
+{
+score: payload.value sumBy $,
+email: payload.email[0],
+question_type: payload.question_type[0]
+}]]></ee:set-payload>
+            </ee:message>
+        </ee:transform>
+        <db:insert doc:name="Insert" doc:id="af94f938-9d64-4e06-b97a-c3ad563b0e70" config-ref="Database_Config">
+            <db:sql><![CDATA[insert into submission (question_type, email, score) values (:question_type, :email, :score);]]></db:sql>
+            <db:input-parameters><![CDATA[#[{'question_type': payload.question_type,
+ 'email': payload.email,
+ 'score': payload.score
+}]]]></db:input-parameters>
+        </db:insert>
+        <ee:transform doc:name="Transform Message" doc:id="d27f4edf-22bb-46a4-b8bf-6cf78333eea1">
+            <ee:message>
+                <ee:set-payload><![CDATA[%dw 2.0
+output application/json
+---
+{"message": "Score inserted successfully"}]]></ee:set-payload>
+            </ee:message>
+        </ee:transform>
+    </flow>
+    <flow name="get:\user\aadhar\(id):kiran-user-system-api-config">
+        <logger level="INFO" message="get:\user\aadhar:kiran-user-system-api-config" />
+        <ee:transform doc:name="Transform Message" doc:id="fb55befa-cf52-4f60-a219-5aadcec2d386">
+            <ee:message>
+                <ee:set-payload><![CDATA[%dw 2.0
+output application/x-www-form-urlencoded
+---
+{"txn_id" : "17c6fa41-778f-49c1-a80a-cfaf7fae2fb8",
+ "consent" : "Y",
+ "uidnumber" : attributes.uriParams.id,
+ "clientid" : "111",
+   "method" : "uidvalidatev2"
+   }]]></ee:set-payload>
+            </ee:message>
+            <ee:variables>
+                <ee:set-variable variableName="aatharId"><![CDATA[%dw 2.0
+output application/json
+---
+attributes.uriParams.id]]></ee:set-variable>
+            </ee:variables>
+        </ee:transform>
+        <ee:cache doc:name="Cache" doc:id="847c33b6-b499-4c17-9474-d2fa22021fd9" cachingStrategy-ref="Caching_Strategy">
+            <http:request method="POST" doc:name="Request" doc:id="bb1a3f4b-ca6a-4e3b-b3a6-b1202d4e229e" config-ref="HTTP_Request_configuration" path="/Uidverifywebsvcv1/VerifyAadhaarNumber">
+                <http:headers><![CDATA[#[{
+	"content-type": "application/x-www-form-urlencoded",
+	"X-RapidAPI-Key": "51e89e2e11msh38c72ed9ecb23bap120a06jsn4bfc8aa8be11",
+	"X-RapidAPI-Host": "verifyaadhaarnumber.p.rapidapi.com"
+}]]]></http:headers>
+            </http:request>
+        </ee:cache>
+        <ee:transform doc:name="Transform Message" doc:id="afefcd20-5f2a-45e4-83fc-832574a7b78a">
+            <ee:message />
+            <ee:variables>
+                <ee:set-variable variableName="aadharCorrect"><![CDATA[%dw 2.0
+output application/json
+---
+(payload.Succeeded.Uid_Details.status default "") == "Success"]]></ee:set-variable>
+            </ee:variables>
+        </ee:transform>
+        <db:select doc:name="Select" doc:id="06319764-d0d4-4ad8-9e77-d9dc5bade6b2" config-ref="Database_Config">
+            <db:sql><![CDATA[Select * from user_details where AadharID = :AadharID]]></db:sql>
+            <db:input-parameters><![CDATA[#[AadharID : vars.aatharId]]]></db:input-parameters>
+        </db:select>
+        <ee:transform doc:name="Transform Message" doc:id="3e768104-90ad-4b3d-974f-4279c6fd6813">
+            <ee:message>
+                <ee:set-payload><![CDATA[%dw 2.0
+output application/json
+---
+{status : (if((isEmpty(payload)) and (vars.aadharCorrect))
+true
+else false),
+error: if(!vars.aadharCorrect)
+"Aadhar is not valid"
+else "User Already Exist"
+}]]></ee:set-payload>
+            </ee:message>
+        </ee:transform>
+        <logger level="INFO" message="get:\user\aadhar\(id):kiran-user-system-api-config" />
+    </flow>
+    <flow name="get:\user\userregister\email:kiran-user-system-api-config">
+        <logger level="INFO" message="get:\user\userregister\email:kiran-user-system-api-config" />
+    </flow>
+</mule>

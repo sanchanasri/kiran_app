@@ -1,0 +1,153 @@
+#%RAML 1.0
+title: Kiran-User-System-API
+description: This API handles user registration, user login, test for specific disorder and the result.
+mediaType: 
+ - application/json
+protocols: [HTTP, HTTPS]
+version: 1.0 
+baseUri: {}
+
+securitySchemes:
+  basic:
+    type: Basic Authentication
+securedBy:
+  - basic
+
+uses:
+      RegisterDetails: /Library/RegisterDetails.raml
+
+/user:
+  /userregister:
+   post:
+    body:
+      application/json:
+        type: RegisterDetails.userCreate
+    responses:
+      200:
+        body:
+          application/json:
+             example:  !include /Examples/UserCreate.raml
+      400:
+        body:
+          application/json:
+            example: !include /Examples/ResultBadReq.raml   
+   put:
+    body:
+      application/json:
+        type: RegisterDetails.userUpdate
+    responses:
+      200:
+        body:
+          application/json:
+             example: !include /Examples/UserUpdate.raml
+      400:
+        body:
+          application/json:
+            example: !include /Examples/ResultBadReq.raml
+   get:
+    queryParameters: 
+       name:
+          type: string
+          required: false
+          example: "alagar"
+       age:
+         type: number
+         required: false
+         example: 19
+       gender:
+         type: 
+         enum:
+           ["male","female","others"]
+         required: false
+         example: "male"
+    responses:
+      200:
+        body:
+          application/json:
+            example: !include /Examples/UserGet.raml
+      400:
+        body:
+          application/json:
+            example: !include /Examples/ResultBadReq.raml
+   /email:
+     get:
+      
+   delete:
+    queryParameters:
+      userId: 
+        type: number
+        required: false
+        example: 19
+    responses:
+      200:
+        body:
+         application/json:
+           example: !include /Examples/UserDelete.raml
+      400:
+        body:
+          application/json:
+            example: !include /Examples/ResultBadReq.raml
+              
+
+  /userlogin: 
+   post:
+    body:
+      application/json:
+        type: RegisterDetails.Userlogin
+    queryParameters:
+      username: 
+        required: false
+        example: "Kiran1@gmail.com"
+      password:
+        required: false
+        example: "Sam123456"
+    responses:
+     201:
+        body:
+          application/json:
+            example: !include /Examples/SuccessResponse.raml
+     400:
+        body:
+          application/json:
+            example: !include /Examples/BadRequest.raml
+
+  /questionnaire:
+    get:
+     description: Fetch the desired disorder type.
+     displayName: select disorder type
+     queryParameters:
+      question_type:
+        type: string
+        required: false
+        example: "Anxiety"
+     responses:
+      200:
+        body:
+          application/json:
+            example: !include /Examples/Questionset.raml
+
+  /submission:
+    description: captures user's response for the corresponding questions.
+    displayName: capture user response
+    post:
+      body:
+        application/json:
+          type: RegisterDetails.UserResponse[]
+      responses:
+       201:
+        body:
+          application/json:
+            example: !include /Examples/ResultSuccessResp.raml
+       400:
+        body:
+          application/json:
+            example: !include /Examples/ResultBadReq.raml
+  /aadhar:
+    /{id}:
+      get: 
+/note:
+  post:
+   body:
+     application/json:
+                
+  
