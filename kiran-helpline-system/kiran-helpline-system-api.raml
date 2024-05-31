@@ -1,0 +1,140 @@
+#%RAML 1.0
+title: kiran-helpline-system-api
+description: 
+mediaType: 
+ - application/json
+protocols:
+- HTTP
+
+version: 1.0 
+securitySchemes:
+  basic:
+    type: Basic Authentication
+securedBy:
+  - basic
+uses:
+      HelplineWorkerDetails: Library/HelplineWorkerDetails.raml
+      HelplineWorkerloginDetails: Library/HelplineWorkerloginDetails.raml
+/HelplineWorker:
+  /HelplineWorkerlogin:
+   post:
+    body:
+      application/json:
+        type: HelplineWorkerloginDetails.HelplineWorkerloginDetails
+    queryParameters:
+      username: 
+        required: false
+        example: "doctor@gmail.com"
+      password:
+        required: false
+        example: "doctor12345"
+    responses:
+      200:
+        body:
+          application/json:
+            example: !include examples/login_examples/LoginSuccessResponse.json
+      400:
+        body:
+          application/json:
+            example: !include examples/login_examples/LoginFailureResponse.json
+                    
+    
+  /HelplineWorkers_register:
+   post:
+    body:
+      application/json:
+        type: HelplineWorkerDetails.HelplineWorkerCreate
+    responses:
+      200:
+        body:
+          application/json:
+             example:  !include examples/registerExamples/HelplineWorkersCreate.json
+      400:
+        body:
+          application/json:
+            example: !include examples/registerExamples/errorResponse.json
+
+    
+   put:
+    body:
+      application/json:
+        type: HelplineWorkerDetails.HelplineWorkerUpdate 
+    responses:
+      200:
+        body:
+          application/json:
+             example: !include examples/registerExamples/HelplineWorkersUpdate.json
+      400:
+        body:
+          application/json:
+            example: !include examples/registerExamples/errorResponse.json
+   get:
+    queryParameters: 
+       email:
+         type: string
+         required: false
+         example:
+           "sanchana@gmail.com"
+       phone_number:
+         type: string 
+         required: false
+         example:
+             "9876598765"
+    responses:
+      200:
+        body:
+          application/json:
+            example: !include examples/registerExamples/HelplineWorkersGet.json
+      400:
+        body:
+          application/json:
+            example: !include examples/registerExamples/errorResponse.json
+              
+    
+   delete:
+      body:
+        application/json:
+          
+      responses:
+        200:
+          body:
+            application/json:
+              example: !include examples/registerExamples/HelplineWorkersDelete.json
+        400:
+          body:
+            application/json:
+              example: !include examples/registerExamples/errorResponse.json
+  /induvidualPsyDetails:
+   /{psyID}:
+    get:
+     responses:
+      200:
+        body:
+          application/json:
+            example: !include /examples/registerExamples/HelplineWorkersGet.json
+      400:
+        body:
+          application/json:
+            example: !include examples/registerExamples/errorResponse.json
+  /psy_approval_details:
+   get:
+    queryParameters:
+      location:
+       type: string
+       required: false
+       example: "chennai"
+      status:
+       type: string
+       required: false
+       example: "pending"
+    responses:
+        200:
+         body:
+           application/json:
+             example: !include examples/registerExamples/HelplineWorkersGet.json
+        400:
+         body:
+           application/json:
+             example: !include examples/registerExamples/errorResponse.json
+
+              

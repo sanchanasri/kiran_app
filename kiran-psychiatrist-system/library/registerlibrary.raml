@@ -1,0 +1,137 @@
+#%RAML 1.0 Library
+types:
+  psyDetails:
+   type: object
+   properties:
+    name:
+     type: string
+     required: false
+     description: 
+     example: "robert"
+    age:
+     type: number
+     required: false
+     description:
+     example: 45
+    gender:
+     type: string
+     required: false
+     description:
+     example: "male"
+    working_experince:
+     type: number
+     required: false
+     example: 10
+    mobile_number:
+     type: string
+     required: true
+     example: "9156342185"
+    email:
+     type: string
+     required: true
+     example: "robert@gmail.com"
+    password:
+     type: string
+     required: true
+     minLength: 6
+     example: "robert@12345"
+    confirm_password:
+     type: string
+     required: true
+     minLength: 6
+     description: "this field contains to repeat the password"
+     example: "robert@12345"
+    image:
+     type: file
+     required: false
+     fileTypes: ['image/jpeg']
+     maxLength: 307200
+    qualification:
+     type: string
+     required: false
+     example: "phd in psychology"
+    affiliations:
+     type: string
+     required: false
+     example: "i have membership in india doctors council"
+    languages_known:
+     type: string
+     required: false
+     example: "english,tamil"
+    about_you:
+     type: string
+     required: false
+     example: "i am good at handling the patients"
+  psy_update:
+    type: object
+    description: 
+    properties:
+      name:
+       type: string
+       required: false
+       description: 
+       example: "robert"
+      age:
+       type: number
+       required: false
+       description:
+       example: 45
+      gender:
+       type: string
+       required: false
+       description:
+       example: "male"
+      working_experince:
+       type: number
+       required: false
+       example: 10
+      mobile_number:
+       type: string
+       required: false
+       example: "9156342185"
+      email:
+       type: string
+       required: false
+       example: "robert@gmail.com"
+      password:
+       type: string
+       required: false
+       minLength: 6
+       example: "robert@12345"
+      confirm_password:
+       type: string
+       required: false
+       minLength: 6
+       description: "this field contains to repeat the password"
+       example: "robert@12345"
+      image:
+       type: file
+       required: false
+       fileTypes: ['image/jpeg']
+       maxLength: 307200
+      qualification:
+       type: string
+       required: false
+       example: "phd in psychology"
+      affiliations:
+       type: string
+       required: false
+       example: "i have membership in india doctors council"
+      languages_known:
+       type: string
+       required: false
+       example: "english,tamil"
+      about_you:
+       type: string
+       required: false
+       example: "i am good at handling the patients"
+      psyID:
+       type: number
+       example:
+         1
+      
+
+      
+
+
+

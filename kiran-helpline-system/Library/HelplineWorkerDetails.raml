@@ -1,0 +1,161 @@
+#%RAML 1.0 Library
+types:
+  HelplineWorkerCreate:
+    description: 
+    type: object
+    properties:
+       first_name:
+          type: string
+          required: true
+          example:
+            "sanchana"
+       last_name:
+          type: string
+          required: false
+          example:
+            "sri"
+       email:
+         type: string
+         required: true
+         pattern: ^.+@.+\..+$
+         example:
+           "kiran123@gmail.com"
+       age:
+         type: number
+         required: false
+         example: 34
+       gender:
+         type: string
+         required: false
+         example:
+           "female"
+       password:
+         type: string
+         required: true
+         minLength: 6
+         example:
+           "Kiran@123"
+       confirm_password:
+         type: string
+         required: true
+         minLength: 6
+         example:
+           "Kiran@123"
+       phone_number:
+         type:  string
+         required: true
+         example:
+           "9600291731"
+       work_experience:
+         type: string
+         required: false
+         example:
+            "two years"
+       qualifications:
+         type: string
+         required: false
+         example:
+            "BSc in psycology"
+       about:
+         type: string
+         required: false
+         example:
+            "rehabilitation workers"
+       affiliations:
+         type: string
+         required: false
+         example:
+            "Kiran volunteer"
+       languages:
+         type: string
+         required: false
+         example:
+            "english,Tamil"
+       image:
+         type: file
+         fileTypes: ['image/jpeg']
+         required: false
+         maxLength: 307200
+      
+
+  HelplineWorkerUpdate:
+    type: object
+    description: 
+    
+    properties:
+      first_name:
+        type: string
+        required: false
+        example:
+            "sanchana"
+      last_name:
+        type: string
+        required: false
+        example:
+            "sri"
+      email:
+        type: string
+        required: false
+        pattern: ^.+@.+\..+$
+        example:
+          "kiran123@gmail.com"
+      age:
+        type: number
+        required: false
+        example: 34
+      gender:
+        type: string
+        required: false
+        example:
+          "female"
+      password:
+        type: string
+        required: false
+        minLength: 6
+        example:
+          "Kiran@123"
+      confirm_password:
+        type: string
+        required: false
+        minLength: 6
+        example:
+          "Kiran@123"
+      phone_number:
+        type:  string
+        required: false
+        example:
+          "9600291731"
+      work_experience:
+        type: string
+        required: false
+        example:
+           "two years"
+      qualifications:
+        type: string
+        required: false
+        example:
+           "BSc in psycology"
+      about:
+        type: string
+        required: false
+        example:
+           "rehabilitation workers"
+      affiliations:
+        type: string
+        required: false
+        example:
+           "Kiran volunteer"
+      languages:
+        type: string
+        required: false
+        example:
+           "english,Tamil"
+      image:
+        type: file
+        fileTypes: ['image/jpeg']
+        required: false
+        maxLength: 307200
+      helpline_id:
+        type: number
+        example:
+          2

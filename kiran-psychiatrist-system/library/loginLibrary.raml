@@ -1,0 +1,17 @@
+#%RAML 1.0 Library
+types:
+  loginDetails:
+   type: object
+   properties:
+    username:
+     type: string
+     required: true
+     minLength: 6
+     description: "This field contains email id or phone number of the user"
+     example: "psychiatristlogin@gmail.com"
+    password:
+     type: string
+     required: true
+     minLength: 6
+     description: "This field contains password of the user"
+     example: "doctor@12345"

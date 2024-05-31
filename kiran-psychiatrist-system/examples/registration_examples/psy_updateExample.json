@@ -1,0 +1,11 @@
+[  
+  {
+    "name": "robert",
+    "gender":"male",
+    "phoneNumber": "9845514655",
+    "email": "psychiatrist@gmail.com",
+    "password": "robert@12345",
+    "confirmPassword": "robert@12345",
+     "status":"updation successful"
+  }
+]

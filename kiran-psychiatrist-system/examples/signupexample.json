@@ -1,0 +1,20 @@
+[
+  {
+          "name": "robert",
+          "age": 35,
+          "gender": "male",
+          "mobile_number": "9845514655",
+          "email": "psychiatrist@gmail.com",
+          "password": "robert@12345",
+          "confirm_password": "robert@12345",
+          "qualification": "i have done phd in psychology",
+          "affiliations": "i am member in doctors council",
+          "languages_known": "tamil,english",
+          "about_you": "i am good at handling patients",
+          "working_experince": 5,
+          "experience":"psyciartist",
+          "status":"inactive",
+          "location":"tiruppur",
+          "image": "null"
+  }
+]

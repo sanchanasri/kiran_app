@@ -1,0 +1,16 @@
+[
+  {
+     "first_name":"sanchana",
+     "last_name":"sri",
+     "email":"kiran123@gmail.com",
+     "password":"Kiran@123",
+     "confirmPassword":"Kiran@123",
+     "phone_number":"9600291731",
+     "experience":"admin",
+     "id_proof":{"status": "successful",
+                 "file_id": "GFBSVJHGV54",
+                 "filename": "sanchana_id.pdf"
+                },
+     "status":"insertion successful"
+  }
+]

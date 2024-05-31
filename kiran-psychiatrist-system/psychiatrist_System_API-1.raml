@@ -1,0 +1,153 @@
+#%RAML 1.0
+title: psychiatrist_System_Api-1
+description: 
+
+mediaType: 
+ - application/json
+protocols: [ HTTP ]
+
+version: 1.0 
+securitySchemes:
+  basic:
+    type: Basic Authentication
+securedBy:
+  - basic
+
+
+uses:
+  psyDetails: library/registerlibrary.raml
+  loginDetails: library/loginLibrary.raml
+    
+
+baseUri: 
+   
+       
+
+
+/psychiatrist:
+  /psychiatrist_registraion:
+    description:
+    post:
+     body:
+      application/json:
+        type: psyDetails.psyDetails
+        example: !include examples/signupexample.json
+          
+     queryParameters:
+      name:
+        required: false
+        example: "robert"          
+      email:
+        required: false
+        example: "psychiatrist@gmail.com"
+      gender:
+        required: false
+        example: "male"
+          
+    
+     responses:
+      200:
+        body:
+          application/json:
+            example: !include examples/registration_examples/successResponse.json
+      
+      400:
+        body:
+          application/json:
+            example: !include examples/registration_examples/errorResponse.json
+
+    
+    put:
+     body:
+      application/json:
+        type: psyDetails.psy_update
+     responses:
+      200:
+        body:
+          application/json:
+             example: !include examples/registration_examples/psy_updateExample.json
+      400:
+        body:
+          application/json:
+            example: !include examples/registration_examples/errorResponse.json       
+
+    get:
+     queryParameters: 
+       name:
+          type: string
+          required: false
+          example:
+            "sanchana"
+       email:
+         type: string
+         required: false
+         example:
+           "sanchana@gmail.com"
+       mobile_number:
+         type: string 
+         required: false
+         example:
+             "9876598765"
+     responses:
+      200:
+        body:
+          application/json:
+            example: !include examples/registration_examples/psy_getExample.json
+      400:
+        body:
+          application/json:
+            example: !include examples/registration_examples/errorResponse.json
+    delete:
+      body:
+        application/json:
+          
+      responses:
+        200:
+          body:
+            application/json:
+              example: !include examples/registration_examples/psy_deleteExample.json
+        400:
+          body:
+            application/json:
+              example: !include examples/registration_examples/errorResponse.json
+  /psychiatrist_login:
+  
+   post:
+    body:  
+      application/json:
+        type: loginDetails.loginDetails
+        example:
+          username: "psychiatristlogin@gmail.com"
+          password: "doctor@12345"
+    
+    queryParameters:
+      username: 
+        required: false
+        example: "psychiatrist@gmail.com"
+      password:
+        required: false
+        example: "doctor@12345"
+          
+
+    responses:
+      200:
+        body:
+          application/json:
+            example: !include examples/login_examples/success_response.raml
+      
+      400:
+        body:
+          application/json:
+            example: !include examples/login_examples/error_response.json
+              
+              
+          
+              
+              
+          
+
+
+  
+
+
+    
